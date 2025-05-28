@@ -10,6 +10,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  const saveButton = document.getElementById('saveButton');
+
+  // Add save button functionality
+  saveButton.addEventListener('click', async () => {
+    try {
+      // Get the current active tab
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      
+      // Send message to content script to read page content and create file
+      const result = await chrome.tabs.sendMessage(tab.id, { action: 'readPage' });
+      
+      // Send message to content script to create file
+      const success = await chrome.tabs.sendMessage(tab.id, { 
+        action: 'createFile',
+        content: result.content
+      });
+      
+      if (success) {
+        contentDisplay.innerHTML = `
+          <div class="success">
+            <p>File has been created and downloaded successfully!</p>
+          </div>
+        `;
+      } else {
+        contentDisplay.innerHTML = `
+          <div class="error">
+            <p>Failed to create file.</p>
+          </div>
+        `;
+      }
+    } catch (error) {
+      contentDisplay.innerHTML = `
+        <div class="error">
+          <p><strong>Error saving content:</strong></p>
+          <p>${error.message}</p>
+        </div>
+      `;
+    }
+  });
+
   readButton.addEventListener('click', async () => {
     try {
       // Get the current active tab

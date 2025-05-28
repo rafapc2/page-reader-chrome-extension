@@ -5,7 +5,8 @@
   "description": "Read page content with this Chrome extension",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "downloads"
   ],
   "action": {
     "default_popup": "popup.html"
