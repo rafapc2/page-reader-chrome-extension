@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Page Reader Extension",
+  "version": "1.0",
+  "description": "Read page content with this Chrome extension",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
